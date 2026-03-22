@@ -1,5 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using AndRod.StronglyTypedIds.Test.StronglyTypedIdTests;
+﻿using AndRod.StronglyTypedIds.Test.StronglyTypedIdTests;
 
 namespace AndRod.StronglyTypedIds.Test;
 
@@ -403,7 +402,7 @@ public sealed class TestStronglyTypedIdFactory
     {
         var id = StronglyTypedIdFactory.Empty<GuidId>();
         Assert.IsNotNull(id);
-        Assert.AreEqual(default(Guid), id.Value);
+        Assert.AreEqual(default, id.Value);
         Assert.AreEqual(default(Guid), ((IStronglyTypedId)id).Value);
         Assert.IsInstanceOfType<GuidId>(id);
         Assert.AreEqual(typeof(GuidId), id.StronglyTypedIdType);
