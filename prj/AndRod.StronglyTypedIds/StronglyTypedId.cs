@@ -4,7 +4,8 @@
 /// A strongly-typed ID that wraps a value of type <typeparamref name="TValue"/>.
 /// </summary>
 public abstract class StronglyTypedId<TSelf, TValue>(TValue value) : IStronglyTypedId<TValue>, IStronglyTypedId, IEquatable<StronglyTypedId<TSelf, TValue>>, IComparable<StronglyTypedId<TSelf, TValue>>
-    where TValue : struct, IEquatable<TValue>, IComparable<TValue>
+where TSelf : StronglyTypedId<TSelf, TValue>
+where TValue : struct, IEquatable<TValue>, IComparable<TValue>
 {
     /// <inheritdoc />
     public TValue Value { get; } = value;
@@ -54,4 +55,14 @@ public abstract class StronglyTypedId<TSelf, TValue>(TValue value) : IStronglyTy
     /// Returns the hash code of the underlying value.
     /// </summary>
     public override int GetHashCode() => Value.GetHashCode();
+
+    /// <summary>
+    /// Creates a new strongly-typed ID of type <see cref="TSelf"/> with the given value.
+    /// </summary>
+    public static TSelf Create(TValue value) => StronglyTypedIdFactory.Create<TSelf>(value);
+
+    /// <summary>
+    /// Returns an empty strongly-typed ID of type <see cref="TSelf"/> with the default value.
+    /// </summary>
+    public static TSelf Empty() => StronglyTypedIdFactory.Empty<TSelf>();
 }
