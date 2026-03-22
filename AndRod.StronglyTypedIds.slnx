@@ -1,0 +1,8 @@
+<Solution>
+  <Folder Name="/prj/">
+    <Project Path="prj/AndRod.StronglyTypedIds/AndRod.StronglyTypedIds.csproj" />
+  </Folder>
+  <Folder Name="/test/">
+    <Project Path="test/AndRod.StronglyTypedIds.Test/AndRod.StronglyTypedIds.Test.csproj" />
+  </Folder>
+</Solution>
