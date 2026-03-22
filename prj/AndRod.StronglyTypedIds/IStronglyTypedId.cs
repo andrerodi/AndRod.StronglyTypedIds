@@ -1,15 +1,15 @@
 namespace AndRod.StronglyTypedIds;
 
 /// <summary>
-/// Represents a strongly-typed ID that wraps a value of type <typeparamref name="T"/>.
+/// Represents a strongly-typed ID that wraps a value of type <typeparamref name="TValue"/>.
 /// </summary>
-public interface IStronglyTypedId<out T>
-    where T : struct, IEquatable<T>, IComparable<T>
+public interface IStronglyTypedId<out TValue>
+    where TValue : struct, IEquatable<TValue>, IComparable<TValue>
 {
     /// <summary>
     /// Gets the value of the strongly-typed ID.
     /// </summary>
-    T Value { get; }
+    TValue Value { get; }
 }
 
 /// <summary>

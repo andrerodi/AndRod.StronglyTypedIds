@@ -49,6 +49,18 @@ public static class StronglyTypedIdFactory
     }
 
     /// <summary>
+    /// Returns a strongly-typed ID instance with the specified value.
+    /// </summary>
+    internal static TStronglyTypedId Create<TStronglyTypedId, TValue>(TValue value)
+        where TStronglyTypedId : IStronglyTypedId<TValue>
+        where TValue : struct, IEquatable<TValue>, IComparable<TValue>
+    {
+        var type = typeof(TStronglyTypedId);
+
+        return (TStronglyTypedId)Activator.CreateInstance(type, value)!;
+    }
+
+    /// <summary>
     /// Returns an empty instance of the strongly-typed ID type with the default value.
     /// </summary>
     public static IStronglyTypedId Empty(Type type)
@@ -69,5 +81,17 @@ public static class StronglyTypedIdFactory
         var type = typeof(TStronglyTypedId);
 
         return (TStronglyTypedId)Empty(type);
+    }
+
+    /// <summary>
+    /// Returns an empty instance of the strongly-typed ID type with the default value.
+    /// </summary>
+    internal static TStronglyTypedId Empty<TStronglyTypedId, TValue>()
+        where TStronglyTypedId : IStronglyTypedId<TValue>
+        where TValue : struct, IEquatable<TValue>, IComparable<TValue>
+    {
+        var type = typeof(TStronglyTypedId);
+
+        return (TStronglyTypedId)Activator.CreateInstance(type, args: default(TValue))!;
     }
 }

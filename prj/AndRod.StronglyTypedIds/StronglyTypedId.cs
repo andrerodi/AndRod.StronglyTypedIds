@@ -39,7 +39,7 @@ where TValue : struct, IEquatable<TValue>, IComparable<TValue>
     /// <summary>
     /// Compares two strongly-typed IDs for equality.
     /// </summary>
-    public static bool operator ==(StronglyTypedId<TSelf, TValue> a, StronglyTypedId<TSelf, TValue> b) => a?.Value.Equals(b.Value) ?? false;
+    public static bool operator ==(StronglyTypedId<TSelf, TValue> a, StronglyTypedId<TSelf, TValue> b) => a?.Equals(b) ?? false;
 
     /// <summary>
     /// Compares two strongly-typed IDs for inequality.
@@ -49,7 +49,7 @@ where TValue : struct, IEquatable<TValue>, IComparable<TValue>
     /// <summary>
     /// Compares two strongly-typed IDs for equality.
     /// </summary>
-    public override bool Equals(object? obj) => obj is StronglyTypedId<TSelf, TValue> other && Value.Equals(other.Value);
+    public override bool Equals(object? obj) => obj is StronglyTypedId<TSelf, TValue> other && this.Equals(other);
 
     /// <summary>
     /// Returns the hash code of the underlying value.
@@ -59,10 +59,10 @@ where TValue : struct, IEquatable<TValue>, IComparable<TValue>
     /// <summary>
     /// Creates a new strongly-typed ID of type <see cref="TSelf"/> with the given value.
     /// </summary>
-    public static TSelf Create(TValue value) => StronglyTypedIdFactory.Create<TSelf>(value);
+    public static TSelf Create(TValue value) => StronglyTypedIdFactory.Create<TSelf, TValue>(value);
 
     /// <summary>
     /// Returns an empty strongly-typed ID of type <see cref="TSelf"/> with the default value.
     /// </summary>
-    public static TSelf Empty() => StronglyTypedIdFactory.Empty<TSelf>();
+    public static TSelf Empty() => StronglyTypedIdFactory.Empty<TSelf, TValue>();
 }
