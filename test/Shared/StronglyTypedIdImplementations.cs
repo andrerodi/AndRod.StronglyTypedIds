@@ -1,6 +1,6 @@
 ﻿using AndRod.StronglyTypedIds;
 
-namespace AndRod.StronglyTypedIds.Test.StronglyTypedIdTests;
+namespace Shared;
 
 public class ByteId(byte value) : StronglyTypedId<ByteId, byte>(value)
 {

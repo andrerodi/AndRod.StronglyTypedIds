@@ -1,3 +1,5 @@
+using System.Reflection;
+
 namespace AndRod.StronglyTypedIds;
 
 /// <summary>
@@ -5,24 +7,38 @@ namespace AndRod.StronglyTypedIds;
 /// </summary>
 public static class StronglyTypedIdFactory
 {
+    private static readonly StronglyTypedIdConfiguration _configuration = new();
+
+    private static readonly HashSet<Type> _types = [];
+    public static IReadOnlyCollection<Type> Types => _types;
+
     private static readonly Dictionary<Type, (Type ValueType, object DefaultValue)> _typeMap = [];
+    public static IReadOnlyDictionary<Type, (Type ValueType, object DefaultValue)> TypeMap => _typeMap;
 
     static StronglyTypedIdFactory()
     {
-        // Scan all assemblies for types that implement IStronglyTypedId
-        var stronglyTypedIdImplementationTypes = AppDomain.CurrentDomain.GetAssemblies()
-            .SelectMany(a => a.GetTypes())
-            .Where(t => typeof(IStronglyTypedId).IsAssignableFrom(t) && t.IsClass && !t.IsAbstract);
-
-        foreach (var type in stronglyTypedIdImplementationTypes)
+        // Create the cache of strongly-typed ID value types including their default values
+        foreach (var stronglyTypedIdType in GetAllStronglyTypedIds())
         {
-            var genericValueType = getGenericValueType(type);
-            _typeMap[type] = new(genericValueType, getDefaultValue(genericValueType));
+            _types.Add(stronglyTypedIdType);
         }
 
-        static Type getGenericValueType(Type type) => type.BaseType!.GetGenericArguments()[1]!;
+        var stronglyTypedIdValueTypes = GetStronglyTypedIdValueTypes();
+
+        foreach (var (stronglyTypedIdType, valueType) in stronglyTypedIdValueTypes)
+        {
+            _typeMap[stronglyTypedIdType] = (valueType, getDefaultValue(valueType));
+        }
 
         static object getDefaultValue(Type type) => type.IsValueType ? Activator.CreateInstance(type)! : default!;
+    }
+
+    /// <summary>
+    /// Configures the strongly-typed ID factory with the specified types.
+    /// </summary>
+    public static StronglyTypedIdConfiguration Configure()
+    {
+        return _configuration;
     }
 
     /// <summary>
@@ -93,5 +109,54 @@ public static class StronglyTypedIdFactory
         var type = typeof(TStronglyTypedId);
 
         return (TStronglyTypedId)Activator.CreateInstance(type, args: default(TValue))!;
+    }
+
+    private static IEnumerable<Type> GetAllStronglyTypedIds()
+    {
+        if (_configuration is null)
+        {
+            return [];
+        }
+
+        var assemblies = GetAssemblies(_configuration.Types);
+        return assemblies
+            .SelectMany(a => a.GetTypes())
+            .Where(t => typeof(IStronglyTypedId).IsAssignableFrom(t) && t.IsClass && !t.IsAbstract);
+
+        static IEnumerable<Assembly> GetAssemblies(IEnumerable<Type> types)
+        {
+            foreach (var type in types)
+            {
+                var ass = Assembly.GetAssembly(type);
+
+                if (ass is null)
+                {
+                    continue;
+                }
+
+                yield return ass;
+            }
+        }
+    }
+
+    private static IEnumerable<(Type StronglyTypedIdType, Type ValueType)> GetStronglyTypedIdValueTypes()
+    {
+        return GetAllStronglyTypedIds()
+            .Select(t => (
+                StronglyTypedIdType: t.BaseType!.GetGenericArguments()[-1],
+                ValueType: t.BaseType!.GetGenericArguments()[0]
+            ));
+    }
+
+    public sealed class StronglyTypedIdConfiguration
+    {
+        private readonly HashSet<Type> _types = [];
+        public IReadOnlyCollection<Type> Types => _types;
+
+        public StronglyTypedIdConfiguration Add(Type type)
+        {
+            _types.Add(type);
+            return this;
+        }
     }
 }

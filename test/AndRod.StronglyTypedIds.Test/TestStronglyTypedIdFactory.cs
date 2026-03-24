@@ -1,4 +1,4 @@
-﻿using AndRod.StronglyTypedIds.Test.StronglyTypedIdTests;
+﻿using Shared;
 
 namespace AndRod.StronglyTypedIds.Test;
 

@@ -1,4 +1,6 @@
-﻿namespace AndRod.StronglyTypedIds.Test.StronglyTypedIdTests;
+﻿using AndRod.StronglyTypedIds;
+
+namespace Shared;
 
 public readonly struct Compound(int id1, int id2) : IEquatable<Compound>, IComparable<Compound>
 {

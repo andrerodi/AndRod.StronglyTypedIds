@@ -16,8 +16,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\prj\AndRod.StronglyTypedIds\AndRod.StronglyTypedIds.csproj" />
     <ProjectReference Include="..\Shared\Shared.csproj" />
+    <ProjectReference Include="..\..\prj\AndRod.StronglyTypedIds.SystemTextJson\AndRod.StronglyTypedIds.SystemTextJson.csproj" />
   </ItemGroup>
 
 </Project>
