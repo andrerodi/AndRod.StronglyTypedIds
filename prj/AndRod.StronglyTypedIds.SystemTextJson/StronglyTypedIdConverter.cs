@@ -3,12 +3,15 @@ using System.Text.Json.Serialization;
 
 namespace AndRod.StronglyTypedIds.SystemTextJson;
 
-public sealed class StronglyTypedIdSystemTextJsonConverter<TStronglyTypedId, TValue> : JsonConverter<TStronglyTypedId>
-    where TStronglyTypedId : IStronglyTypedId<TValue>, IStronglyTypedId
+public sealed class StronglyTypedIdSystemTextJsonConverter<TStronglyTypedId, TValue>(StronglyTypedIdFactory factory)
+    : JsonConverter<TStronglyTypedId>
+    where TStronglyTypedId : StronglyTypedId<TStronglyTypedId, TValue>
     where TValue : struct, IEquatable<TValue>, IComparable<TValue>
 {
-    private static readonly string _nameofValue = nameof(IStronglyTypedId<>.Value);
-    private static readonly string _nameofType = nameof(IStronglyTypedId.Type);
+    private static readonly string _nameofValue = nameof(StronglyTypedId<,>.Value);
+    private static readonly string _nameofType = nameof(StronglyTypedId<,>.Type);
+
+    private readonly StronglyTypedIdFactory _factory = factory;
 
     /// <summary>
     /// Reads and converts the JSON to a strongly-typed ID of type <typeparamref name="TStronglyTypedId"/>.
@@ -32,7 +35,7 @@ public sealed class StronglyTypedIdSystemTextJsonConverter<TStronglyTypedId, TVa
         }
 
         var value = valueRoot.Deserialize<TValue>(options);
-        return StronglyTypedIdFactory.Create<TStronglyTypedId>(value);
+        return _factory.Create<TStronglyTypedId>(value);
     }
 
     /// <summary>
