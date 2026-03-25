@@ -5,6 +5,9 @@ namespace AndRod.StronglyTypedIds;
 
 public static class DependencyInjection
 {
+    /// <summary>
+    /// Adds the strongly-typed ID factory and configuration to the service collection.
+    /// </summary>
     public static IServiceCollection AddStronglyTypedIds(
         this IServiceCollection services,
         Action<StronglyTypedIdConfiguration> configure)

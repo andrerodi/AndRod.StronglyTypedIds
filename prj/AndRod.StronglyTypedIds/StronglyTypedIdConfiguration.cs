@@ -17,36 +17,24 @@ public sealed class StronglyTypedIdConfiguration
     public IReadOnlyCollection<Type> Types => _types;
 
     private readonly Dictionary<Type, (Type ValueType, object DefaultValue)> _typeMap = [];
-    private bool _build;
+    private bool _built;
 
     /// <summary>
     /// Gets the type map of strongly-typed IDs, mapping each strongly-typed ID type to its value type and default value.
     /// </summary>
     public IReadOnlyDictionary<Type, (Type ValueType, object DefaultValue)> TypeMap => _typeMap;
 
-    private StronglyTypedIdConfiguration Add(Assembly? assembly)
-    {
-        if (assembly is null)
-        {
-            return this;
-        }
-
-        _configuredAssemblies.Add(assembly);
-        return this;
-    }
-
-    private StronglyTypedIdConfiguration Add(Type type) => Add(Assembly.GetAssembly(type));
-
-    public StronglyTypedIdConfiguration Add<T>() where T : IStronglyTypedId => Add(typeof(T));
-
+    /// <summary>
+    /// Builds the configuration, creating the cache of strongly-typed ID value types including their default values.
+    /// </summary>
     public void Build()
     {
-        if (_build)
+        if (_built)
         {
             return;
         }
 
-        _build = true;
+        _built = true;
 
         // Create the cache of strongly-typed ID value types including their default values
         foreach (var stronglyTypedIdType in GetAllStronglyTypedIds())
@@ -62,6 +50,25 @@ public sealed class StronglyTypedIdConfiguration
         }
 
         static object getDefaultValue(Type type) => type.IsValueType ? Activator.CreateInstance(type)! : default!;
+    }
+
+    /// <summary>
+    /// Add a strongly-typed ID type to the configuration.
+    /// The type will be used for assembly scanning to find all other strongly-typed ID types in the same assembly.
+    /// </summary>
+    public StronglyTypedIdConfiguration Add<T>() where T : IStronglyTypedId => Add(typeof(T));
+
+    private StronglyTypedIdConfiguration Add(Type type) => Add(Assembly.GetAssembly(type));
+
+    private StronglyTypedIdConfiguration Add(Assembly? assembly)
+    {
+        if (assembly is null)
+        {
+            return this;
+        }
+
+        _configuredAssemblies.Add(assembly);
+        return this;
     }
 
     private IEnumerable<Type> GetAllStronglyTypedIds()

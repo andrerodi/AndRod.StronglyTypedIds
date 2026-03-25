@@ -81,7 +81,7 @@ public sealed class TestStronglyTypedIdSystemTextJsonConverter
     public void Write_Should_WriteByteIDValue()
     {
         const byte expectedValue = 1;
-        const string expectedJson = "{\"value\":1,\"type\":\"Shared.ByteId\"}";
+        const string expectedJson = "{\"value\":1}";
 
         var converter = _provider.GetRequiredService<StronglyTypedIdSystemTextJsonConverter<ByteId, byte>>();
         using var stream = new MemoryStream();
@@ -96,7 +96,7 @@ public sealed class TestStronglyTypedIdSystemTextJsonConverter
     [TestMethod]
     public void Write_Should_WriteCompoundIdValue()
     {
-        const string expectedJson = "{\"value\":{\"id1\":1,\"id2\":2},\"type\":\"Shared.CompoundId\"}";
+        const string expectedJson = "{\"value\":{\"id1\":1,\"id2\":2}}";
 
         var converter = _provider.GetRequiredService<StronglyTypedIdSystemTextJsonConverter<CompoundId, Compound>>();
         using var stream = new MemoryStream();
