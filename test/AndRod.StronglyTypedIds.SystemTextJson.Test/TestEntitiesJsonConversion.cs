@@ -7,9 +7,10 @@ namespace AndRod.StronglyTypedIds.SystemTextJson.Test;
 [TestClass]
 public class TestEntitiesJsonConversion
 {
-    private readonly JsonSerializerOptions _options;
+    private static JsonSerializerOptions _options = null!;
 
-    public TestEntitiesJsonConversion()
+    [ClassInitialize]
+    public static void Initialize(TestContext context)
     {
         IServiceCollection services = new ServiceCollection();
         services.AddStronglyTypedIds(config =>

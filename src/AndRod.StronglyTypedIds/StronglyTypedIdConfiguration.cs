@@ -1,13 +1,10 @@
+using System.Collections.Concurrent;
 using System.Reflection;
 
 namespace AndRod.StronglyTypedIds;
 
 public sealed class StronglyTypedIdConfiguration
 {
-    public StronglyTypedIdConfiguration()
-    {
-    }
-
     private readonly HashSet<Assembly> _configuredAssemblies = [];
 
     private readonly HashSet<Type> _types = [];
@@ -16,7 +13,7 @@ public sealed class StronglyTypedIdConfiguration
     /// </summary>
     public IReadOnlyCollection<Type> Types => _types;
 
-    private readonly Dictionary<Type, (Type ValueType, object DefaultValue)> _typeMap = [];
+    private readonly ConcurrentDictionary<Type, (Type ValueType, object DefaultValue)> _typeMap = [];
     private bool _built;
 
     /// <summary>

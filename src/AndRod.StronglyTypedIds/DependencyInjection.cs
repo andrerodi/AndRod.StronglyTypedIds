@@ -12,12 +12,11 @@ public static class DependencyInjection
         this IServiceCollection services,
         Action<StronglyTypedIdConfiguration> configure)
     {
-        var config = new StronglyTypedIdConfiguration();
+        var config = StronglyTypedIdFactory.Configuration;
         configure.Invoke(config);
         config.Build();
 
         services.AddSingleton(config);
-        services.AddSingleton<StronglyTypedIdFactory>();
 
         return services;
     }

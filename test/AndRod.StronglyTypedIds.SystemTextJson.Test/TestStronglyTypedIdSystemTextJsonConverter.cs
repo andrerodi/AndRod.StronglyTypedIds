@@ -9,9 +9,10 @@ namespace AndRod.StronglyTypedIds.SystemTextJson.Test;
 [TestClass]
 public sealed class TestStronglyTypedIdSystemTextJsonConverter
 {
-    private readonly IServiceProvider _provider;
+    private static IServiceProvider _provider = null!;
 
-    public TestStronglyTypedIdSystemTextJsonConverter()
+    [ClassInitialize]
+    public static void Initialize(TestContext testContext)
     {
         var services = new ServiceCollection();
         services.AddStronglyTypedIds(configure =>

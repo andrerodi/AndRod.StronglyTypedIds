@@ -3,12 +3,12 @@
 /// <summary>
 /// A strongly-typed ID that wraps a value of type <typeparamref name="TValue"/>.
 /// </summary>
-public abstract class StronglyTypedId<TSelf, TValue>(TValue value) : IStronglyTypedId<TValue>, IStronglyTypedId, IEquatable<StronglyTypedId<TSelf, TValue>>, IComparable<StronglyTypedId<TSelf, TValue>>
-where TSelf : StronglyTypedId<TSelf, TValue>
-where TValue : struct, IEquatable<TValue>, IComparable<TValue>
+public abstract record StronglyTypedId<TSelf, TValue>(TValue Value) : IStronglyTypedId<TValue>, IStronglyTypedId, IEquatable<StronglyTypedId<TSelf, TValue>>, IComparable<StronglyTypedId<TSelf, TValue>>
+    where TSelf : StronglyTypedId<TSelf, TValue>
+    where TValue : struct, IEquatable<TValue>, IComparable<TValue>
 {
     /// <inheritdoc />
-    public TValue Value { get; } = value;
+    public TValue Value { get; } = Value;
 
     /// <inheritdoc />
     object IStronglyTypedId.Value => Value;
@@ -23,7 +23,7 @@ where TValue : struct, IEquatable<TValue>, IComparable<TValue>
     public bool IsTransient => Value.Equals(default);
 
     /// <inheritdoc />
-    public bool Equals(StronglyTypedId<TSelf, TValue>? other)
+    public virtual bool Equals(StronglyTypedId<TSelf, TValue>? other)
     {
         if (other is null) return false;
         return Value.Equals(other.Value);
@@ -35,21 +35,6 @@ where TValue : struct, IEquatable<TValue>, IComparable<TValue>
         if (other is null) return 1;
         return Value.CompareTo(other.Value);
     }
-
-    /// <summary>
-    /// Compares two strongly-typed IDs for equality.
-    /// </summary>
-    public static bool operator ==(StronglyTypedId<TSelf, TValue> a, StronglyTypedId<TSelf, TValue> b) => a?.Equals(b) ?? false;
-
-    /// <summary>
-    /// Compares two strongly-typed IDs for inequality.
-    /// </summary>
-    public static bool operator !=(StronglyTypedId<TSelf, TValue> a, StronglyTypedId<TSelf, TValue> b) => !(a == b);
-
-    /// <summary>
-    /// Compares two strongly-typed IDs for equality.
-    /// </summary>
-    public override bool Equals(object? obj) => obj is StronglyTypedId<TSelf, TValue> other && this.Equals(other);
 
     /// <summary>
     /// Returns the hash code of the underlying value.

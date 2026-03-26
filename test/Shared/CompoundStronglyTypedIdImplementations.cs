@@ -23,6 +23,6 @@ public readonly struct Compound(int id1, int id2) : IEquatable<Compound>, ICompa
     }
 }
 
-public sealed class CompoundId(Compound value) : StronglyTypedId<CompoundId, Compound>(value)
+public sealed record CompoundId(Compound value) : StronglyTypedId<CompoundId, Compound>(value)
 {
 }

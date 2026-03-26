@@ -6,8 +6,6 @@ namespace AndRod.StronglyTypedIds.SystemTextJson;
 
 public static class DependencyInjection
 {
-    private static JsonSerializerOptions? _cachedOptions;
-
     /// <summary>
     /// Adds strongly-typed ID JSON converters to the service collection.
     /// If a <see cref="JsonSerializerOptions"/> service is already registered, it will be used; otherwise, a new one will be created with <see cref="JsonSerializerDefaults.Web"/> as default.
@@ -17,25 +15,22 @@ public static class DependencyInjection
         Action<StronglyTypedIdConfiguration> configure,
         params JsonConverter[] converters)
     {
-        var configuration = new StronglyTypedIdConfiguration();
+        var configuration = StronglyTypedIdJsonConverterFactory.Configuration;
         configure(configuration);
         configuration.Build();
 
-        var factory = new StronglyTypedIdJsonConverterFactory(configuration);
-
-        foreach (var converter in factory.CreateStronglyTypedIdJsonConverterTypes())
+        foreach (var converterType in StronglyTypedIdJsonConverterFactory.CreateStronglyTypedIdJsonConverterTypes())
         {
-            services.AddSingleton(converter);
+            services.AddSingleton(converterType);
         }
-
-        services.AddSingleton<StronglyTypedIdJsonConverterFactory>();
 
         services.AddSingleton<JsonSerializerOptions>(sp =>
         {
             var options = new JsonSerializerOptions(JsonSerializerDefaults.Web);
-            foreach (var converter in factory.CreateStronglyTypedIdJsonConverterTypes())
+
+            foreach (var converter in StronglyTypedIdJsonConverterFactory.CreateStronglyTypedIdJsonConverters())
             {
-                options.Converters.Add((JsonConverter)sp.GetRequiredService(converter));
+                options.Converters.Add(converter);
             }
 
             foreach (var converter in converters)
@@ -43,7 +38,6 @@ public static class DependencyInjection
                 options.Converters.Add(converter);
             }
 
-            _cachedOptions = options;
             return options;
         });
 

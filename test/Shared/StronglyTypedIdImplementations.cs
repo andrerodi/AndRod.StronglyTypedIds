@@ -2,34 +2,34 @@
 
 namespace Shared;
 
-public class ByteId(byte value) : StronglyTypedId<ByteId, byte>(value)
+public sealed record ByteId(byte Value) : StronglyTypedId<ByteId, byte>(Value)
 {
 }
 
-public class ShortId(short value) : StronglyTypedId<ShortId, short>(value)
+public sealed record ShortId(short Value) : StronglyTypedId<ShortId, short>(Value)
 {
 }
 
-public class UShortId(ushort value) : StronglyTypedId<UShortId, ushort>(value)
+public sealed record UShortId(ushort Value) : StronglyTypedId<UShortId, ushort>(Value)
 {
 }
 
-public class IntId(int value) : StronglyTypedId<IntId, int>(value)
+public sealed record IntId(int Value) : StronglyTypedId<IntId, int>(Value)
 {
 }
 
-public class UIntId(uint value) : StronglyTypedId<UIntId, uint>(value)
+public sealed record UIntId(uint Value) : StronglyTypedId<UIntId, uint>(Value)
 {
 }
 
-public class LongId(long value) : StronglyTypedId<LongId, long>(value)
+public sealed record LongId(long Value) : StronglyTypedId<LongId, long>(Value)
 {
 }
 
-public class ULongId(ulong value) : StronglyTypedId<ULongId, ulong>(value)
+public sealed record ULongId(ulong Value) : StronglyTypedId<ULongId, ulong>(Value)
 {
 }
 
-public class GuidId(Guid value) : StronglyTypedId<GuidId, Guid>(value)
+public sealed record GuidId(Guid Value) : StronglyTypedId<GuidId, Guid>(Value)
 {
 }

@@ -3,15 +3,15 @@ namespace AndRod.StronglyTypedIds;
 /// <summary>
 /// Factory class for creating strongly-typed IDs.
 /// </summary>
-public sealed class StronglyTypedIdFactory(StronglyTypedIdConfiguration configuration)
+public static class StronglyTypedIdFactory
 {
-    private readonly StronglyTypedIdConfiguration _configuration = configuration;
-    public StronglyTypedIdConfiguration Configuration => _configuration;
+    private static StronglyTypedIdConfiguration _configuration = new();
+    public static StronglyTypedIdConfiguration Configuration => _configuration;
 
     /// <summary>
     /// Returns a strongly-typed ID instance with the specified value.
     /// </summary>
-    public IStronglyTypedId Create(Type type, object value)
+    public static IStronglyTypedId Create(Type type, object value)
     {
         if (!_configuration.TypeMap.TryGetValue(type, out var _))
         {
@@ -24,7 +24,7 @@ public sealed class StronglyTypedIdFactory(StronglyTypedIdConfiguration configur
     /// <summary>
     /// Returns a strongly-typed ID instance with the specified value.
     /// </summary>
-    public TStronglyTypedId Create<TStronglyTypedId>(object value) where TStronglyTypedId : IStronglyTypedId
+    public static TStronglyTypedId Create<TStronglyTypedId>(object value) where TStronglyTypedId : IStronglyTypedId
     {
         var type = typeof(TStronglyTypedId);
 
@@ -46,7 +46,7 @@ public sealed class StronglyTypedIdFactory(StronglyTypedIdConfiguration configur
     /// <summary>
     /// Returns an empty instance of the strongly-typed ID type with the default value.
     /// </summary>
-    public IStronglyTypedId Empty(Type type)
+    public static IStronglyTypedId Empty(Type type)
     {
         if (!_configuration.TypeMap.TryGetValue(type, out var valueType))
         {
@@ -59,12 +59,12 @@ public sealed class StronglyTypedIdFactory(StronglyTypedIdConfiguration configur
     /// <summary>
     /// Returns an empty instance of the strongly-typed ID type with the default value.
     /// </summary>
-    public TStronglyTypedId Empty<TStronglyTypedId>() where TStronglyTypedId : IStronglyTypedId
+    public static TStronglyTypedId Empty<TStronglyTypedId>() where TStronglyTypedId : IStronglyTypedId
     {
         return (TStronglyTypedId)Empty(typeof(TStronglyTypedId));
     }
 
-    internal static TStronglyTypedId Empty<TStronglyTypedId, TValue>()
+    public static TStronglyTypedId Empty<TStronglyTypedId, TValue>()
         where TStronglyTypedId : IStronglyTypedId<TValue>
         where TValue : struct, IEquatable<TValue>, IComparable<TValue>
     {
