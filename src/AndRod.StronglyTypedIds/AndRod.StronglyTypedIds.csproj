@@ -10,4 +10,8 @@
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="10.0.5" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\AndRod.Core\src\AndRod.Core\AndRod.Core.csproj" />
+  </ItemGroup>
+
 </Project>
