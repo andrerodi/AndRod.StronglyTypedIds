@@ -6,6 +6,12 @@ namespace AndRod.StronglyTypedIds.SystemTextJson;
 
 public static class DependencyInjection
 {
+    private static JsonSerializerOptions? _cachedOptions;
+
+    /// <summary>
+    /// Adds strongly-typed ID JSON converters to the service collection.
+    /// If a <see cref="JsonSerializerOptions"/> service is already registered, it will be used; otherwise, a new one will be created with <see cref="JsonSerializerDefaults.Web"/> as default.
+    /// </summary>
     public static IServiceCollection AddStronlgyTypedIdJsonConverters(
         this IServiceCollection services,
         Action<StronglyTypedIdConfiguration> configure,
@@ -36,11 +42,11 @@ public static class DependencyInjection
             {
                 options.Converters.Add(converter);
             }
-            
+
+            _cachedOptions = options;
             return options;
         });
 
         return services;
     }
-
 }

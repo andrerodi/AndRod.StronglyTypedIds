@@ -1,7 +1,7 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
-    <ProjectReference Include="..\..\prj\AndRod.StronglyTypedIds\AndRod.StronglyTypedIds.csproj" />
+    <ProjectReference Include="..\..\src\AndRod.StronglyTypedIds\AndRod.StronglyTypedIds.csproj" />
   </ItemGroup>
 
   <PropertyGroup>

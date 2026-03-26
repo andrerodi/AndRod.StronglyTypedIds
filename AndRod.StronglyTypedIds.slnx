@@ -1,7 +1,7 @@
 <Solution>
-  <Folder Name="/prj/">
-    <Project Path="prj/AndRod.StronglyTypedIds/AndRod.StronglyTypedIds.csproj" />
-    <Project Path="prj/AndRod.StronglyTypedIds.SystemTextJson/AndRod.StronglyTypedIds.SystemTextJson.csproj" />
+  <Folder Name="/src/">
+    <Project Path="src/AndRod.StronglyTypedIds/AndRod.StronglyTypedIds.csproj" />
+    <Project Path="src/AndRod.StronglyTypedIds.SystemTextJson/AndRod.StronglyTypedIds.SystemTextJson.csproj" />
   </Folder>
   <Folder Name="/test/">
     <Project Path="test/AndRod.StronglyTypedIds.Test/AndRod.StronglyTypedIds.Test.csproj" />

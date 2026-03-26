@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>
@@ -18,7 +18,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Shared\Shared.csproj" />
-    <ProjectReference Include="..\..\prj\AndRod.StronglyTypedIds.SystemTextJson\AndRod.StronglyTypedIds.SystemTextJson.csproj" />
+    <ProjectReference Include="..\..\src\AndRod.StronglyTypedIds.SystemTextJson\AndRod.StronglyTypedIds.SystemTextJson.csproj" />
   </ItemGroup>
 
 </Project>
