@@ -5,15 +5,14 @@ namespace AndRod.StronglyTypedIds;
 /// </summary>
 public static class StronglyTypedIdFactory
 {
-    private static StronglyTypedIdConfiguration _configuration = new();
-    public static StronglyTypedIdConfiguration Configuration => _configuration;
+    public static StronglyTypedIdConfiguration Configuration { get; } = new();
 
     /// <summary>
     /// Returns a strongly-typed ID instance with the specified value.
     /// </summary>
     public static IStronglyTypedId Create(Type type, object value)
     {
-        if (!_configuration.TypeMap.TryGetValue(type, out var _))
+        if (!Configuration.TypeMap.TryGetValue(type, out var _))
         {
             throw new ArgumentException($"Unknown strongly-typed ID type: {type.FullName}");
         }
@@ -48,12 +47,9 @@ public static class StronglyTypedIdFactory
     /// </summary>
     public static IStronglyTypedId Empty(Type type)
     {
-        if (!_configuration.TypeMap.TryGetValue(type, out var valueType))
-        {
-            throw new ArgumentException($"Unknown strongly-typed ID type: {type.FullName}");
-        }
-
-        return (IStronglyTypedId)Activator.CreateInstance(type, args: valueType.DefaultValue)!;
+        return Configuration.TypeMap.TryGetValue(type, out var valueType)
+            ? (IStronglyTypedId)Activator.CreateInstance(type, args: valueType.DefaultValue)!
+            : throw new ArgumentException($"Unknown strongly-typed ID type: {type.FullName}");
     }
 
     /// <summary>
@@ -64,10 +60,22 @@ public static class StronglyTypedIdFactory
         return (TStronglyTypedId)Empty(typeof(TStronglyTypedId));
     }
 
+    /// <summary>
+    /// Creates an empty instance of the specified strongly-typed ID type with the default value.
+    /// </summary>
     public static TStronglyTypedId Empty<TStronglyTypedId, TValue>()
         where TStronglyTypedId : IStronglyTypedId<TValue>
         where TValue : struct, IEquatable<TValue>, IComparable<TValue>
     {
         return (TStronglyTypedId)Activator.CreateInstance(typeof(TStronglyTypedId), args: default(TValue))!;
+    }
+
+    /// <summary>
+    /// Gets the underlying value type of the specified strongly-typed ID type.
+    /// </summary>
+    public static Type GetValueType<TStronglyTypedId>()
+        where TStronglyTypedId : IStronglyTypedId
+    {
+        return Configuration.GetValueType(typeof(TStronglyTypedId));
     }
 }

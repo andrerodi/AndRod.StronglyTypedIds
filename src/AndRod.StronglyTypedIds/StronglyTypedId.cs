@@ -36,6 +36,12 @@ public abstract record StronglyTypedId<TSelf, TValue>(TValue Value) :
         return Value.Equals(other.Value);
     }
 
+    bool IStronglyTypedId.Equals(object? obj)
+    {
+        if (obj is not TSelf other) return false;
+        return Equals(other);
+    }
+
     /// <inheritdoc />
     public int CompareTo(TSelf? other)
     {

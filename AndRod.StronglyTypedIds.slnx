@@ -1,10 +1,12 @@
 <Solution>
   <Folder Name="/src/">
     <Project Path="src/AndRod.StronglyTypedIds/AndRod.StronglyTypedIds.csproj" />
+    <Project Path="src/AndRod.StronglyTypedIds.EfCore/AndRod.StronglyTypedIds.EfCore.csproj" />
     <Project Path="src/AndRod.StronglyTypedIds.SystemTextJson/AndRod.StronglyTypedIds.SystemTextJson.csproj" />
   </Folder>
   <Folder Name="/test/">
     <Project Path="test/AndRod.StronglyTypedIds.Test/AndRod.StronglyTypedIds.Test.csproj" />
+    <Project Path="test/AndRod.StronglyTypedIds.EfCore.Test/AndRod.StronglyTypedIds.EfCore.Test.csproj" />
     <Project Path="test/AndRod.StronglyTypedIds.SystemTextJson.Test/AndRod.StronglyTypedIds.SystemTextJson.Test.csproj" />
     <Project Path="test/Shared/Shared.csproj" />
   </Folder>

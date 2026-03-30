@@ -22,6 +22,16 @@ public sealed class StronglyTypedIdConfiguration
     public IReadOnlyDictionary<Type, (Type ValueType, object DefaultValue)> TypeMap => _typeMap;
 
     /// <summary>
+    /// Gets the value type of the specified strongly-typed ID type.
+    /// </summary>
+    public Type GetValueType(Type stronglyTypedIdType)
+    {
+        return TypeMap.TryGetValue(stronglyTypedIdType, out var tuple)
+            ? tuple.ValueType
+            : throw new ArgumentException($"Unknown strongly-typed ID type: {stronglyTypedIdType.FullName}");
+    }
+
+    /// <summary>
     /// Builds the configuration, creating the cache of strongly-typed ID value types including their default values.
     /// </summary>
     public void Build()
